@@ -60,9 +60,6 @@ def backfill_location_information(counties, dryrun=False):
     batch.append((county_fips_code, state_fips_code, county_fips_name, combined_fips_code, state_name, county_name, id))
     i += 1
     if i % batch_size == 0:
-      ############################################################
-      # TODO: if super slow, use indexed column for WHERE clause #
-      ############################################################
       print(f'doing batch. i: {i - batch_size + 1}-{i}; id: {id - batch_size + 1}-{id}')
       cur.executemany('UPDATE fires SET county_fips_code = ?, state_fips_code = ?, county_fips_name = ?, combined_fips_code = ?, state_name = ?, county_name = ? WHERE id = ?', batch)
       batch = []
