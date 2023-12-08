@@ -1,1 +1,2 @@
-data-backups/*
+data-backups/
+__pycache__/
