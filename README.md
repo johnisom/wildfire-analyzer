@@ -16,8 +16,7 @@ stand alone app running on windows 10 with jupyter notebook and sqlite for data 
 
 make the following descriptive (analytical) methods:
 1. table showing ranking of counties that have the most fires and most acres burned by fires, per year.
-  a. alternatively, have it be a map with counties that are shaded according to number of fires, and a mouse hover reveals a tooltip with more info
-    i. this can't happen in jupyter afaik, but could in tkinter
+  a. alternatively, have it be a map with counties that are shaded according to number of fires (this is what i went with)
 2. a pie chart that shows causes of wildfires in the US. the user can select an individual state if they wish, or all of the USA.
 3. a confusion matrix to visualize the model's performance
 
