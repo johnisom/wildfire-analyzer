@@ -9,7 +9,3 @@ def add_acres_burned_to_counties(geoid_indexed_counties, fires_df):
   geoid_indexed_counties['acres_burned'] = 0.0
   for fips_code, acres_burned in sums.items():
     geoid_indexed_counties.loc[fips_code, 'acres_burned'] = acres_burned
-
-def get_min_max_fire_years(fires_df):
-  fire_years = fires_df['fire_year']
-  return fire_years.min(), fire_years.max()

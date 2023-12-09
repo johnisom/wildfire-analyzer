@@ -15,7 +15,13 @@ REGIONS_STATE_ALPHA_CODES = {
   'pacific': { 'AK', 'HI' },
 }
 REGIONS_STATE_ALPHA_CODES['lower48'] = { code for region in ('west', 'midwest', 'south', 'northeast') for code in REGIONS_STATE_ALPHA_CODES[region] }
-COUNTIES = pygris.counties(year=2017, cb=True)
+_counties = None
+
+def get_all_counties():
+  global _counties
+  if _counties is None:
+    _counties = pygris.counties(year=2017, cb=True)
+  return _counties.copy()
 
 def get_state_fips_codes(keys):
   fips_codes = set()
