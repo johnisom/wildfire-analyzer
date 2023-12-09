@@ -1,5 +1,11 @@
 # WGU Capstone Project
 
+## Installation
+
+Install miniconda, then run `conda env create --file environment.yml` in this directory. Then activate the environment with `conda activate wgu-capstone`.
+
+## About
+
 This project is a data analytics and prediction project that uses machine learning. It runs in jupyter notebooks.
 
 The dataset I'm using is https://www.kaggle.com/datasets/rtatman/188-million-us-wildfires/data. I cleaned and formatted the data and selected only
