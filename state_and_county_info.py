@@ -20,6 +20,7 @@ _counties = None
 def get_all_counties():
   global _counties
   if _counties is None:
+    print('Loading data on all US counties...')
     _counties = pygris.counties(year=2017, cb=True)
   return _counties.copy()
 

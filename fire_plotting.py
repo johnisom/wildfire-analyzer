@@ -12,9 +12,9 @@ def plot_counties_by_number_of_fires(counties_geo_df, keys, plot_title):
   more_than_zero_fire_counts.plot(ax=ax, column='fire_count', legend=True, norm=LogNorm(vmin=more_than_zero_fire_counts.fire_count.min(), vmax=more_than_zero_fire_counts.fire_count.max()))
   ax.tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
   ax.set_title(plot_title)
-  fig.supxlabel('(Gray means zero fires were reported)')
+  fig.supxlabel('(Gray: data not available)')
   fig.tight_layout()
-  plt.show()
+  return fig, ax
 
 def plot_counties_by_total_area_burned(counties_geo_df, keys, plot_title):
   fips_codes = get_state_fips_codes(keys)
@@ -26,9 +26,9 @@ def plot_counties_by_total_area_burned(counties_geo_df, keys, plot_title):
   more_than_zero_acres_burned.plot(ax=ax, column='acres_burned', legend=True, norm=LogNorm(vmin=more_than_zero_acres_burned.acres_burned.min(), vmax=more_than_zero_acres_burned.acres_burned.max()))
   ax.tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
   ax.set_title(plot_title)
-  fig.supxlabel('(Gray means zero fires were reported)')
+  fig.supxlabel('(Gray: data not available)')
   fig.tight_layout()
-  plt.show()
+  return fig, ax
 
 def plot_causes_of_fires_by_state(fires_df, keys, plot_title):
   state_fips_codes = get_state_fips_codes(keys)
@@ -41,4 +41,4 @@ def plot_causes_of_fires_by_state(fires_df, keys, plot_title):
   fig, ax = plt.subplots(figsize=[12, 8])
   cause_counts.plot.pie(ax=ax, title=plot_title, autopct=lambda pct: f'{int(pct / 100 * total_count):,}', colormap=plt.cm.tab20)
   fig.tight_layout()
-  plt.show()
+  return fig, ax
