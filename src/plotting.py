@@ -33,7 +33,7 @@ def plot_counties_by_total_area_burned(counties_geo_df, keys, plot_title):
 def plot_causes_of_fires_by_number_of_fires(fires_df, keys, plot_title):
   state_fips_codes = get_state_fips_codes(keys)
   cause_counts_df = fires_df[fires_df.state_fips_code.isin(state_fips_codes)].value_counts('stat_cause_descr').reset_index()
-  total_count = len(fires_df)
+  total_count = cause_counts_df['count'].sum()
   # group small categories into "Other (aggregate)" for categories at less than 1.5 percent
   cause_counts_df.loc[cause_counts_df['count'] / total_count < 0.015, 'stat_cause_descr'] = 'Other (aggregate)'
   cause_counts = cause_counts_df.groupby('stat_cause_descr')['count'].sum().sort_values(ascending=False)
