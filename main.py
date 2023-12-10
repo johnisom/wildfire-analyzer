@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from plotting import plot_causes_of_fires_by_number_of_fires, plot_causes_of_fires_by_total_area_burned, plot_counties_by_number_of_fires, plot_counties_by_total_area_burned
 from myutils import add_fire_count_to_counties, add_acres_burned_to_counties, negativize_positive_longitudes
 from state_and_county_info import get_all_counties
+from gui.app import App
 
 DB_FILENAME = 'db/fires.sqlite'
 
@@ -88,3 +89,5 @@ def plot_everything(keys=('lower48',), year_start=None, year_end=None):
   plot_causes_of_fires_by_number_of_fires(fires_df, keys, fire_cause_counts_title)
   plot_counties_by_number_of_fires(counties_geo_df, keys, fire_counts_title)
   plt.show()
+
+App().mainloop()
