@@ -95,21 +95,31 @@ class PlotsFrame(NotebookFrame):
     if len(err_msgs) > 0:
       showerror(title='Please fix the following errors', message='\n'.join(err_msgs))
       return
+    match button_name:
+      case 'fire_cause_counts':
+        plot_fire_cause_counts(**kwargs)
+      case 'fire_cause_area':
+        plot_fire_cause_area_burned(**kwargs)
+      case 'county_counts':
+        plot_fire_county_counts(**kwargs)
+      case 'county_area':
+        plot_fire_county_area_burned(**kwargs)
+      case 'all':
+        plot_everything(**kwargs)
 
   def collect_inputs(self):
-    kwargs = {
-      'keys': set()
-    }
+    keys = []
+    kwargs = {}
 
     for region, (_, checkedvar) in self.checkbuttons.items():
       if checkedvar.get():
-        kwargs['keys'].add(region)
+        keys.append(region)
 
     alpha_codes = self.state_entry.get_value()
     if alpha_codes != '':
       for code in alpha_codes.replace(' ', '').split(','):
         if len(code) == 2:
-          kwargs['keys'].add(code)
+          keys.append(code)
 
     start_year = self.start_year_entry.get_value()
     if start_year != '':
@@ -118,6 +128,7 @@ class PlotsFrame(NotebookFrame):
     if end_year != '':
       kwargs['year_end'] = int(end_year)
 
+    kwargs['keys'] = tuple(keys)
     return kwargs
 
   def validate_inputs(self, kwargs):

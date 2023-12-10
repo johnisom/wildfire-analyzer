@@ -1,5 +1,4 @@
 import pygris
-
 from .myutils import negativize_positive_longitudes
 
 STATE_ALPHA_FIPS_CODES = {
@@ -18,6 +17,7 @@ REGIONS_STATE_ALPHA_CODES = {
 }
 REGIONS_STATE_ALPHA_CODES['lower48'] = { code for region in ('west', 'midwest', 'south', 'northeast') for code in REGIONS_STATE_ALPHA_CODES[region] }
 REGIONS_STATE_ALPHA_CODES['all'] = set(STATE_ALPHA_FIPS_CODES.keys())
+
 _counties = None
 
 def get_all_counties():
@@ -26,7 +26,7 @@ def get_all_counties():
     print('Loading data on all US counties...')
     _counties = pygris.counties(cb=True)
     negativize_positive_longitudes(_counties)
-  return _counties.copy()
+  return _counties
 
 def get_state_fips_codes(keys):
   fips_codes = set()

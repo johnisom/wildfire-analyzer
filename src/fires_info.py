@@ -12,4 +12,4 @@ def get_fires_dataframe():
     con = sqlite3.connect(f'file:{DB_FILENAME}?mode=ro', uri=True)
     _fires_df = pd.read_sql_query(f'SELECT * FROM fires', con)
     con.close()
-  return _fires_df.copy()
+  return _fires_df
