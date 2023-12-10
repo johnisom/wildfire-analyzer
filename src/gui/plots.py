@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import showerror
-from .custom_widgets import NotebookFrame, DefaultEntry
+from .custom_widgets import NotebookFrame, DefaultEntry, Title
 from ..state_and_county_info import REGIONS_STATE_ALPHA_CODES, STATE_ALPHA_FIPS_CODES
 from ..bindings import plot_fire_cause_counts, plot_fire_cause_area_burned, plot_fire_county_counts, plot_fire_county_area_burned, plot_everything
 
@@ -13,11 +13,10 @@ class PlotsFrame(NotebookFrame):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     
-    title_label = ttk.Label(self, text='Plots')
+    title = Title(self, text='Plots')
+    subframe = ttk.LabelFrame(self, text='Select Area to Plot: One or more regions and/or one more more comma-separated states')
 
-    form_frame = ttk.LabelFrame(self, text='Select Area to Plot: One or more regions and/or one more more comma-separated states')
-
-    checkbutton_frame = ttk.Frame(form_frame, padding=5)
+    checkbutton_frame = ttk.Frame(subframe, padding=5)
     checkbutton_label = ttk.Label(checkbutton_frame, text='Region')
     self.checkbuttons = {}
     for region in REGIONS_STATE_ALPHA_CODES.keys():
@@ -26,15 +25,15 @@ class PlotsFrame(NotebookFrame):
       self.checkbuttons[region] = (checkbutton, checked)
     self.checkbuttons['lower48'][1].set(True)
 
-    state_entry_frame = ttk.Frame(form_frame, padding=5)
-    state_entry_label = ttk.Label(state_entry_frame, text='State alpha codes')
+    state_entry_frame = ttk.Frame(subframe, padding=5)
+    state_entry_label = ttk.Label(state_entry_frame, text='State two-letter codes')
     self.state_entry_var = StringVar()
     self.state_entry = DefaultEntry(state_entry_frame,  default_text='AL, KY, UT, etc.', textvariable=self.state_entry_var)
 
     check_num = lambda newval: newval == '' or (newval.isdigit() and len(newval) <= 4)
     check_num_wrapper = (self.register(check_num), '%P')
 
-    years_entry_frame = ttk.Frame(form_frame, padding=5)
+    years_entry_frame = ttk.Frame(subframe, padding=5)
     years_entry_label = ttk.Label(years_entry_frame, text='Enter start and end year (inclusive) to filter visualized data.')
     start_year_label = ttk.Label(years_entry_frame, text='Start year:')
     self.start_year_variable = StringVar()
@@ -43,16 +42,16 @@ class PlotsFrame(NotebookFrame):
     self.end_year_variable = StringVar()
     self.end_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.max_year), textvariable=self.end_year_variable, validate='key', validatecommand=check_num_wrapper)
 
-    submit_frame = ttk.Frame(form_frame)
-    self.fire_cause_counts_button = ttk.Button(submit_frame, text='# Fires by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_counts'))
-    self.fire_cause_area_button = ttk.Button(submit_frame, text='Area Burned by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_area'))
-    self.county_counts_button = ttk.Button(submit_frame, text='# Fires by County', command=lambda *e: self.handle_button(button_name='county_counts'))
-    self.county_area_button = ttk.Button(submit_frame, text='Area Burned by County', command=lambda *e: self.handle_button(button_name='county_area'))
-    self.all_button = ttk.Button(submit_frame, text='All Charts', command=lambda *e: self.handle_button(button_name='all'))
+    submit_frame = ttk.Frame(subframe)
+    fire_cause_counts_button = ttk.Button(submit_frame, text='# Fires by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_counts'))
+    fire_cause_area_button = ttk.Button(submit_frame, text='Area Burned by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_area'))
+    county_counts_button = ttk.Button(submit_frame, text='# Fires by County', command=lambda *e: self.handle_button(button_name='county_counts'))
+    county_area_button = ttk.Button(submit_frame, text='Area Burned by County', command=lambda *e: self.handle_button(button_name='county_area'))
+    all_button = ttk.Button(submit_frame, text='All Charts', command=lambda *e: self.handle_button(button_name='all'))
 
-    # Set up the grid
-    title_label.grid(row=0, column=0, columnspan=3, sticky=EW)
-    form_frame.grid(row=1, column=0, sticky=NSEW)
+    # Set items on the grid
+    title.grid(row=0, column=0, columnspan=3, sticky=EW)
+    subframe.grid(row=1, column=0, sticky=NSEW)
     checkbutton_frame.grid(row=0, column=0, rowspan=2, sticky=NW)
     checkbutton_label.grid(row=0, column=0, sticky=(N, E, W))
     for i, (checkbutton, _) in enumerate(self.checkbuttons.values()):
@@ -67,19 +66,19 @@ class PlotsFrame(NotebookFrame):
     end_year_label.grid(row=1, column=2)
     self.end_year_entry.grid(row=1, column=3)
     submit_frame.grid(row=2, column=0, columnspan=2, sticky=NSEW)
-    self.fire_cause_counts_button.grid(row=0, column=0, sticky=NSEW, padx=2, pady=2)
-    self.fire_cause_area_button.grid(row=0, column=1, sticky=NSEW, padx=2, pady=2)
-    self.county_counts_button.grid(row=0, column=2, sticky=NSEW, padx=2, pady=2)
-    self.county_area_button.grid(row=0, column=3, sticky=NSEW, padx=2, pady=2)
-    self.all_button.grid(row=0, column=4, sticky=NSEW, padx=2, pady=2)
+    fire_cause_counts_button.grid(row=0, column=0, sticky=NSEW, padx=2, pady=2)
+    fire_cause_area_button.grid(row=0, column=1, sticky=NSEW, padx=2, pady=2)
+    county_counts_button.grid(row=0, column=2, sticky=NSEW, padx=2, pady=2)
+    county_area_button.grid(row=0, column=3, sticky=NSEW, padx=2, pady=2)
+    all_button.grid(row=0, column=4, sticky=NSEW, padx=2, pady=2)
 
-    # Configure the Grid (optional)
+    # Configure the Grid
     self.rowconfigure((0,), weight=1)
     self.rowconfigure((1,), weight=10)
     self.columnconfigure((0,), weight=1)
-    form_frame.rowconfigure((0, 1), weight=5)
-    form_frame.rowconfigure((2,), weight=1)
-    form_frame.columnconfigure((0, 1), weight=1)
+    subframe.rowconfigure((0, 1), weight=2)
+    subframe.rowconfigure((2,), weight=1)
+    subframe.columnconfigure((0, 1), weight=1)
     checkbutton_frame.rowconfigure(tuple(range(len(self.checkbuttons) + 1)), weight=1)
     checkbutton_frame.columnconfigure((0,), weight=1)
     state_entry_frame.rowconfigure((0, 1), weight=1)
@@ -88,6 +87,7 @@ class PlotsFrame(NotebookFrame):
     years_entry_frame.columnconfigure((0, 1, 2, 3), weight=1)
     submit_frame.rowconfigure((0,), weight=1)
     submit_frame.columnconfigure((0, 1, 2, 3, 4), weight=1)
+
 
   def handle_button(self, button_name):
     kwargs = self.collect_inputs()
@@ -136,7 +136,7 @@ class PlotsFrame(NotebookFrame):
 
     # validate keys
     if len(kwargs['keys']) == 0:
-      msgs.append('Must select at least 1 region or enter 1 two-letter state code.')
+      msgs.append('Must select at least 1 region or enter 1 valids two-letter state code.')
     for key in kwargs['keys']:
       if len(key) == 2 and key not in STATE_ALPHA_FIPS_CODES:
         msgs.append(f'{key!r} not a valid two-letter state code.')

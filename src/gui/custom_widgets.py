@@ -7,7 +7,7 @@ class NotebookFrame(ttk.Frame):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    self.configure(borderwidth=2, relief=SUNKEN)
+    self.configure(borderwidth=2, relief=SUNKEN, padding=5)
 
 class DefaultEntry(ttk.Entry):
   def __init__(self, master=None, default_text='', **kwargs):
@@ -33,3 +33,17 @@ class DefaultEntry(ttk.Entry):
 
   def get_value(self):
     return '' if self.showing_default_text else self.get()
+
+class Title(ttk.Label):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    # TODO
+    self.configure(font=('Helvetica', 20))
+
+class Subtitle(ttk.Label):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    # TODO
+    self.configure(font=('Helvetica', 15))

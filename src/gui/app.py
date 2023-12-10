@@ -9,9 +9,9 @@ class App(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    self.title('WGU Capstone')
+    self.title('Wildfire Analyzer')
     self.resizable(False, False)
-    self.geometry('650x350')
+    self.geometry('650x400')
 
     # Set up the notebook and the frames in the notebook
     self.notebook = ttk.Notebook(self, padding=2)
