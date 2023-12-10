@@ -31,14 +31,17 @@ class PlotsFrame(NotebookFrame):
     self.state_entry_var = StringVar()
     self.state_entry = DefaultEntry(state_entry_frame,  default_text='AL, KY, UT, etc.', textvariable=self.state_entry_var)
 
+    check_num = lambda newval: newval == '' or (newval.isdigit() and len(newval) <= 4)
+    check_num_wrapper = (self.register(check_num), '%P')
+
     years_entry_frame = ttk.Frame(form_frame, padding=5)
     years_entry_label = ttk.Label(years_entry_frame, text='Enter start and end year (inclusive) to filter visualized data.')
     start_year_label = ttk.Label(years_entry_frame, text='Start year:')
     self.start_year_variable = StringVar()
-    self.start_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.min_year), textvariable=self.start_year_variable)
+    self.start_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.min_year), textvariable=self.start_year_variable, validate='key', validatecommand=check_num_wrapper)
     end_year_label = ttk.Label(years_entry_frame, text='End year:')
     self.end_year_variable = StringVar()
-    self.end_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.max_year), textvariable=self.end_year_variable)
+    self.end_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.max_year), textvariable=self.end_year_variable, validate='key', validatecommand=check_num_wrapper)
 
     submit_frame = ttk.Frame(form_frame)
     self.fire_cause_counts_button = ttk.Button(submit_frame, text='# Fires by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_counts'))
