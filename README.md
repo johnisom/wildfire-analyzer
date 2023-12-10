@@ -4,6 +4,10 @@
 
 Install miniconda, then run `conda env create --file environment.yml` in this directory. Then activate the environment with `conda activate wgu-capstone`.
 
+## Running application
+
+`python ./main.py`
+
 ## About
 
 This project is a data analytics and prediction project that uses machine learning. It runs in jupyter notebooks.

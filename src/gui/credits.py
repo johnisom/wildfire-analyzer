@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from .notebook_frame import NotebookFrame
+from .custom_widgets import NotebookFrame
 
 class CreditsFrame(NotebookFrame):
   title = 'Credits'

@@ -11,7 +11,7 @@ class App(Tk):
 
     self.title('WGU Capstone')
     self.resizable(False, False)
-    self.geometry('800x500+800+500')
+    self.geometry('650x350')
 
     # Set up the notebook and the frames in the notebook
     self.notebook = ttk.Notebook(self, padding=2)
