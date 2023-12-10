@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import ttk
+from .notebook_frame import NotebookFrame
 
-class PredictionsFrame(Frame):
+class PredictionsFrame(NotebookFrame):
   title = 'Predictions'
 
   def __init__(self, *args, **kwargs):

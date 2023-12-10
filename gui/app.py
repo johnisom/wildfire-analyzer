@@ -10,9 +10,11 @@ class App(Tk):
     super().__init__(*args, **kwargs)
 
     self.title('WGU Capstone')
+    self.resizable(False, False)
+    self.geometry('800x500+800+500')
 
     # Set up the notebook and the frames in the notebook
-    self.notebook = ttk.Notebook(self)
+    self.notebook = ttk.Notebook(self, padding=2)
     self.welcome_frame = WelcomeFrame(self.notebook)
     self.plots_frame = PlotsFrame(self.notebook)
     self.predictions_frame = PredictionsFrame(self.notebook)
