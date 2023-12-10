@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
-from state_and_county_info import get_state_fips_codes
+from .state_and_county_info import get_state_fips_codes
 
 def plot_counties_by_number_of_fires(counties_geo_df, keys, plot_title):
   fips_codes = get_state_fips_codes(keys)

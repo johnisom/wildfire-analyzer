@@ -1,7 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from .notebook_frame import NotebookFrame
-from state_and_county_info import REGIONS_STATE_ALPHA_CODES
+from ..state_and_county_info import REGIONS_STATE_ALPHA_CODES
+from ..bindings import plot_fire_cause_counts, plot_fire_cause_area_burned, plot_fire_county_counts, plot_fire_county_area_burned, plot_everything
 
 class PlotsFrame(NotebookFrame):
   title = 'Plots'

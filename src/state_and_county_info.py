@@ -1,6 +1,6 @@
 import pygris
 
-from myutils import negativize_positive_longitudes
+from .myutils import negativize_positive_longitudes
 
 STATE_ALPHA_FIPS_CODES = {
   'AL': '01', 'AK': '02', 'AZ': '04', 'AR': '05', 'CA': '06', 'CO': '08', 'CT': '09', 'DE': '10', 'DC': '11', 'FL': '12', 'GA': '13', 'HI': '15', 'ID': '16',
