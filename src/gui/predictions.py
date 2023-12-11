@@ -1,10 +1,30 @@
 from tkinter import *
 from tkinter import ttk
-from tkcalendar import DateEntry
 from .custom_widgets import NotebookFrame, Title, DefaultEntry, DatetimeEntry
 
 class PredictionsFrame(NotebookFrame):
   title = 'Predictions'
+
+  @staticmethod
+  def check_longitude(newval):
+    try:
+      if newval == '' or newval == '-': return True
+      if len(newval) == 2 and newval[0] == '-' and (int(newval[1]) == 1 or int(newval[1]) >= 6): return True
+      if len(newval) == 3 and newval[0] == '-' and int(newval[1]) == 1 and int(newval[2]) <= 8: return True
+      flt = float(newval)
+      return flt <= -65 and flt > -188
+    except:
+      return False
+
+  @staticmethod
+  def check_latitude(newval):
+    try:
+      if newval == '': return True
+      if len(newval) == 1 and int(newval) >= 1 and int(newval) <= 7: return True
+      flt = float(newval)
+      return flt < 72 and flt >= 17
+    except:
+      return False
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -27,9 +47,9 @@ class PredictionsFrame(NotebookFrame):
     county_var = StringVar()
     self.county_entry = ttk.Combobox(input_frame, textvariable=county_var, state=DISABLED)
     latitude_label = ttk.Label(input_frame, text='Latitude: ')
-    self.latitude_entry = DefaultEntry(input_frame, default_text='(optional)')
+    self.latitude_entry = DefaultEntry(input_frame, default_text='(optional)', validate='key', validatecommand=(self.register(PredictionsFrame.check_latitude), '%P'))
     longitude_label = ttk.Label(input_frame, text='Longitude: ')
-    self.longitude_entry = DefaultEntry(input_frame, default_text='(optional)')
+    self.longitude_entry = DefaultEntry(input_frame, default_text='(optional)', validate='key', validatecommand=(self.register(PredictionsFrame.check_longitude), '%P'))
 
     # Set items on the grid
     title.grid(row=0, column=0, sticky=(N, E, W))
