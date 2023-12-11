@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from .custom_widgets import NotebookFrame, Title, DefaultEntry, DatetimeEntry
-from ..state_and_county_info import get_fips_codes_dataframe
+from ..location_info import get_fips_codes_dataframe
 
 class PredictionsFrame(NotebookFrame):
   title = 'Predictions'

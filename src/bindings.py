@@ -2,7 +2,7 @@ from math import inf
 import matplotlib.pyplot as plt
 from .plotting import plot_causes_of_fires_by_number_of_fires, plot_causes_of_fires_by_total_area_burned, plot_counties_by_number_of_fires, plot_counties_by_total_area_burned
 from .myutils import add_fire_count_to_counties, add_acres_burned_to_counties
-from .state_and_county_info import get_counties_geodf
+from .location_info import get_counties_geodf
 from .fires_info import get_fires_dataframe
 
 def plot_fire_cause_counts(keys=('lower48',), year_start=None, year_end=None):

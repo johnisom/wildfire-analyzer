@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import showerror
 from .custom_widgets import NotebookFrame, DefaultEntry, Title
-from ..state_and_county_info import REGIONS_STATE_ALPHA_CODES, STATE_ALPHA_FIPS_CODES
+from ..location_info import REGIONS_STATE_ALPHA_CODES, STATE_ALPHA_FIPS_CODES
 from ..bindings import plot_fire_cause_counts, plot_fire_cause_area_burned, plot_fire_county_counts, plot_fire_county_area_burned, plot_everything
 
 class PlotsFrame(NotebookFrame):
@@ -95,7 +95,7 @@ class PlotsFrame(NotebookFrame):
     kwargs = self.collect_inputs()
     err_msgs = self.validate_inputs(kwargs)
     if len(err_msgs) > 0:
-      showerror(title='Please fix the following errors', message='\n'.join(err_msgs))
+      showerror(parent=self, title='Please fix the following errors', message='\n'.join(err_msgs))
       return
     match button_name:
       case 'fire_cause_counts':
