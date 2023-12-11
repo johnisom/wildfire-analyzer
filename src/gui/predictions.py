@@ -119,7 +119,6 @@ class PredictionsFrame(NotebookFrame):
 
   def handle_state_selected(self, *_):
     state_name = self.state_var.get()
-    print(state_name)
     county_names = self.county_names(state_name)
     if county_names:
       self.county_entry.configure(state=NORMAL, values=county_names)
