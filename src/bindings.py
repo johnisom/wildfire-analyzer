@@ -2,7 +2,7 @@ from math import inf
 import matplotlib.pyplot as plt
 from .plotting import plot_causes_of_fires_by_number_of_fires, plot_causes_of_fires_by_total_area_burned, plot_counties_by_number_of_fires, plot_counties_by_total_area_burned
 from .myutils import add_fire_count_to_counties, add_acres_burned_to_counties
-from .state_and_county_info import get_all_counties
+from .state_and_county_info import get_counties_geodf
 from .fires_info import get_fires_dataframe
 
 def plot_fire_cause_counts(keys=('lower48',), year_start=None, year_end=None):
@@ -36,7 +36,7 @@ def plot_fire_county_counts(keys=('lower48',), year_start=None, year_end=None):
   if year_start > year_end:
     raise ValueError(f'year_start is greater than year_end ({year_start} > {year_end})')
   fires_df = fires_df[fires_df['fire_year'].between(year_start, year_end)]
-  counties_geo_df = get_all_counties().set_index('GEOID')
+  counties_geo_df = get_counties_geodf().set_index('GEOID')
 
   add_fire_count_to_counties(counties_geo_df, fires_df)
   plot_title = f'Number of reported wildfires in the US by county between {year_start} and {year_end}'
@@ -50,7 +50,7 @@ def plot_fire_county_area_burned(keys=('lower48',), year_start=None, year_end=No
   if year_start > year_end:
     raise ValueError(f'year_start is greater than year_end ({year_start} > {year_end})')
   fires_df = fires_df[fires_df['fire_year'].between(year_start, year_end)]
-  counties_geo_df = get_all_counties().set_index('GEOID')
+  counties_geo_df = get_counties_geodf().set_index('GEOID')
 
   add_acres_burned_to_counties(counties_geo_df, fires_df)
   plot_title = f'Number of reported acres burned by wildfires in the US by county between {year_start} and {year_end}'
@@ -62,7 +62,7 @@ def plot_everything(keys=('lower48',), year_start=None, year_end=None):
   year_start = max(fires_df.fire_year.min(), year_start or -inf)
   year_end = min(fires_df.fire_year.max(), year_end or inf)
   fires_df = fires_df[fires_df['fire_year'].between(year_start, year_end)]
-  counties_geo_df = get_all_counties().set_index('GEOID')
+  counties_geo_df = get_counties_geodf().set_index('GEOID')
   add_fire_count_to_counties(counties_geo_df, fires_df)
   add_acres_burned_to_counties(counties_geo_df, fires_df)
   fire_cause_counts_title = f'Number of reported wildfires in the US by fire cause between {year_start} and {year_end}'

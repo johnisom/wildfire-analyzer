@@ -1,13 +1,13 @@
 import sqlite3
 from rtree.index import Index
 from functools import reduce
-from ..state_and_county_info import get_gounties_geodf
+from ..state_and_county_info import get_counties_geodf
 
 DB_FILENAME = 'db/fires.sqlite'
 
 def backfill_location_information(dryrun=False):
   print('loading counties')
-  counties = get_gounties_geodf()
+  counties = get_counties_geodf()
   print('connecting to db')
   con = sqlite3.connect(DB_FILENAME)
   cur = con.cursor()
