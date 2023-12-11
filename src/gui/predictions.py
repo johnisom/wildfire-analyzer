@@ -6,6 +6,15 @@ class PredictionsFrame(NotebookFrame):
   title = 'Predictions'
 
   @staticmethod
+  def check_fire_size(newval):
+    if newval == '': return True
+    try:
+      flt = float(newval)
+      return flt >= 0
+    except ValueError:
+      return False
+
+  @staticmethod
   def check_longitude(newval):
     try:
       if newval == '' or newval == '-': return True
@@ -13,7 +22,7 @@ class PredictionsFrame(NotebookFrame):
       if len(newval) == 3 and newval[0] == '-' and int(newval[1]) == 1 and int(newval[2]) <= 8: return True
       flt = float(newval)
       return flt <= -65 and flt > -188
-    except:
+    except ValueError:
       return False
 
   @staticmethod
@@ -23,7 +32,7 @@ class PredictionsFrame(NotebookFrame):
       if len(newval) == 1 and int(newval) >= 1 and int(newval) <= 7: return True
       flt = float(newval)
       return flt < 72 and flt >= 17
-    except:
+    except ValueError:
       return False
 
   def __init__(self, *args, **kwargs):
@@ -38,8 +47,7 @@ class PredictionsFrame(NotebookFrame):
     contained_datetime_label = ttk.Label(input_frame, text='Contained datetime: ')
     self.contained_datetime_entry = DatetimeEntry(input_frame)
     fire_size_label = ttk.Label(input_frame, text='Fire size (acres): ')
-    fire_size_var = StringVar()
-    self.fire_size_entry = DefaultEntry(input_frame, textvariable=fire_size_var)
+    self.fire_size_entry = DefaultEntry(input_frame, default_text='0.1', validate='key', validatecommand=(self.register(PredictionsFrame.check_fire_size), '%P'))
     state_label = ttk.Label(input_frame, text='State: ')
     state_var = StringVar()
     self.state_entry = ttk.Combobox(input_frame, textvariable=state_var)
