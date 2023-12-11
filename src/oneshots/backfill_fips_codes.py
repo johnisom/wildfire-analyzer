@@ -1,15 +1,13 @@
 import sqlite3
-import pygris
 from rtree.index import Index
 from functools import reduce
+from ..state_and_county_info import get_gounties_geodf
 
 DB_FILENAME = 'db/fires.sqlite'
 
-# load county info
-print('loading counties')
-counties = pygris.counties(year=2017)
-
-def backfill_location_information(counties, dryrun=False):
+def backfill_location_information(dryrun=False):
+  print('loading counties')
+  counties = get_gounties_geodf()
   print('connecting to db')
   con = sqlite3.connect(DB_FILENAME)
   cur = con.cursor()
