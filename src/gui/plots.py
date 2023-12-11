@@ -36,11 +36,9 @@ class PlotsFrame(NotebookFrame):
     years_entry_frame = ttk.Frame(subframe, padding=5)
     years_entry_label = ttk.Label(years_entry_frame, text='Enter start and end year (inclusive) to filter visualized data.')
     start_year_label = ttk.Label(years_entry_frame, text='Start year:')
-    self.start_year_variable = StringVar()
-    self.start_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.min_year), textvariable=self.start_year_variable, validate='key', validatecommand=check_num_wrapper)
+    self.start_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.min_year), validate='key', validatecommand=check_num_wrapper)
     end_year_label = ttk.Label(years_entry_frame, text='End year:')
-    self.end_year_variable = StringVar()
-    self.end_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.max_year), textvariable=self.end_year_variable, validate='key', validatecommand=check_num_wrapper)
+    self.end_year_entry = DefaultEntry(years_entry_frame, default_text=str(self.max_year), validate='key', validatecommand=check_num_wrapper)
 
     submit_frame = ttk.Frame(subframe)
     fire_cause_counts_button = ttk.Button(submit_frame, text='# Fires by Cause', command=lambda *e: self.handle_button(button_name='fire_cause_counts'))
@@ -50,7 +48,7 @@ class PlotsFrame(NotebookFrame):
     all_button = ttk.Button(submit_frame, text='All Charts', command=lambda *e: self.handle_button(button_name='all'))
 
     # Set items on the grid
-    title.grid(row=0, column=0, columnspan=3, sticky=EW)
+    title.grid(row=0, column=0, columnspan=3, sticky=(N, E, W))
     subframe.grid(row=1, column=0, sticky=NSEW)
     checkbutton_frame.grid(row=0, column=0, rowspan=2, sticky=NW)
     checkbutton_label.grid(row=0, column=0, sticky=(N, E, W))
