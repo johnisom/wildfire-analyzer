@@ -1,7 +1,7 @@
 import sqlite3
 from rtree.index import Index
 from functools import reduce
-from ..state_and_county_info import get_counties_geodf
+from ..location_info import get_counties_geodf
 
 DB_FILENAME = 'db/fires.sqlite'
 

@@ -3,6 +3,7 @@ from .myutils import negativize_positive_longitudes
 from pathlib import Path
 import sqlite3
 import pandas as pd
+from threading import Lock
 
 STATE_ALPHA_FIPS_CODES = {
   'AL': '01', 'AK': '02', 'AZ': '04', 'AR': '05', 'CA': '06', 'CO': '08', 'CT': '09', 'DE': '10', 'DC': '11', 'FL': '12', 'GA': '13', 'HI': '15', 'ID': '16',
@@ -22,25 +23,29 @@ REGIONS_STATE_ALPHA_CODES['lower48'] = { code for region in ('west', 'midwest', 
 REGIONS_STATE_ALPHA_CODES['all'] = set(STATE_ALPHA_FIPS_CODES.keys())
 DB_PATH = Path().parent / 'db' / 'fires.sqlite'
 
+_counties_mutex = Lock()
 _counties_geodf = None
 
 def get_counties_geodf():
   global _counties_geodf
-  if _counties_geodf is None:
-    print('Loading data on all US counties...')
-    _counties_geodf = pygris.counties(cb=True)
-    negativize_positive_longitudes(_counties_geodf)
+  global _counties_mutex
+  with _counties_mutex:
+    if _counties_geodf is None:
+      _counties_geodf = pygris.counties(cb=True, year=2016)
+      negativize_positive_longitudes(_counties_geodf)
   return _counties_geodf
 
+_fips_codes_mutex = Lock()
 _fips_codes_df = None
 
 def get_fips_codes_dataframe():
   global _fips_codes_df
-  if _fips_codes_df is None:
-    print('Loading db info on fips entries...')
-    con = sqlite3.connect(f'file:{DB_PATH}?mode=ro', uri=True)
-    _fips_codes_df = pd.read_sql_query('SELECT * FROM fips_codes', con)
-    con.close()
+  global _fips_codes_mutex
+  with _fips_codes_mutex:
+    if _fips_codes_df is None:
+      con = sqlite3.connect(f'file:{DB_PATH}?mode=ro', uri=True)
+      _fips_codes_df = pd.read_sql_query('SELECT * FROM fips_codes', con)
+      con.close()
   return _fips_codes_df
 
 def get_state_fips_codes(keys):

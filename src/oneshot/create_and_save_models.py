@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from joblib import dump as joblib_dump
 from pathlib import Path
+from ..prediction import FIPS_MODEL_PATH, FIPS_ENCODER_PATH, LONLAT_MODEL_PATH
 
 DB_FILENAME = 'db/fires.sqlite'
 
@@ -63,12 +64,12 @@ def create_trained_fipscode_model_and_encoder_and_datasets(fires_df):
 
 def train_and_save_fipscode_model_and_encoder(fires_df):
   clf, combined_fips_code_le, *_ = create_trained_fipscode_model_and_encoder_and_datasets(fires_df)
-  joblib_dump(clf, Path().parent.parent / 'joblib-objects' / 'firesize-fipscode-discoverycontaineddates-causecode-classifier.joblib')
-  joblib_dump(combined_fips_code_le, Path().parent.parent / 'joblib-objects' / 'fipscode-labelencoder.joblib')
+  joblib_dump(clf, FIPS_MODEL_PATH)
+  joblib_dump(combined_fips_code_le, FIPS_ENCODER_PATH)
 
 def train_and_save_lonlat_model(fires_df):
   clf, *_ = create_trained_lonlat_model_and_datasets(fires_df)
-  joblib_dump(clf, Path().parent.parent / 'joblib-objects' / 'firesize-lonlat-discoverycontaineddates-causecode-classifier.joblib')
+  joblib_dump(clf, LONLAT_MODEL_PATH)
 
 def train_and_save_both_models():
   con = sqlite3.connect(f'file:{DB_FILENAME}?ro', uri=True)
