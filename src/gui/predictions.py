@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import showerror
 from .custom_widgets import NotebookFrame, Title, Subtitle, DefaultEntry, DatetimeEntry
-from ..location_info import get_fips_codes_dataframe
+from ..location_info import get_fips_codes_dataframe, are_coordinates_inside_usa
+from ..prediction import run_fips_model_prediction, run_lonlat_model_prediction
 import datetime
 
 class PredictionsFrame(NotebookFrame):
@@ -225,14 +226,19 @@ class PredictionsFrame(NotebookFrame):
     if kwargs['fire_size'] <= 0:
       msgs.append('Fire size must be positive and non-zero.')
     # Check location
-    if (kwargs.get('longitude') is not None or kwargs.get('latitude') is not None) and kwargs.get('combined_fips_code') is not None:
+    longitude = kwargs.get('longitude')
+    latitude = kwargs.get('latitude')
+    if (longitude is not None or latitude is not None) and kwargs.get('combined_fips_code') is not None:
       msgs.append('Location must be either by State/County or by Longitude/Latitude, NOT both.')
-    elif kwargs.get('longitude') is None and kwargs.get('latitude') is None and kwargs.get('combined_fips_code') is None:
+    elif longitude is None and latitude is None and kwargs.get('combined_fips_code') is None:
       msgs.append('Location must be provided, either by State/County or Longitude/Latitude.')
-    elif kwargs.get('longitude') is not None and kwargs.get('latitude') is None:
+    elif longitude is not None and latitude is None:
       msgs.append('Latitude must be provided.')
-    elif kwargs.get('longitude') is None and kwargs.get('latitude') is not None:
+    elif longitude is None and latitude is not None:
       msgs.append('Longitude must be provided.')
+    # Check if longitude and latitude are within bounds
+    if longitude is not None and latitude is not None and not are_coordinates_inside_usa(float(longitude), float(latitude)):
+      msgs.append('Longitude and Latitude are not within the boundaries of any USA State or DC or Puerto Rico.')
     return msgs
 
   def run_prediction(self):
@@ -241,13 +247,10 @@ class PredictionsFrame(NotebookFrame):
     if len(err_msgs) > 0:
       showerror(parent=self, title='Please fix the following errors', message='\n'.join(err_msgs))
       return
-    predicted_category_probabilities = [('Lightning', 0.76254), ('Arson', 0.13546), ('Miscellaneous', 0.09463)]
     if kwargs.get('combined_fips_code') is not None:
-      # TODO
-      pass
+      predicted_category_probabilities = run_fips_model_prediction(**kwargs)
     else:
-      # TODO
-      pass
+      predicted_category_probabilities = run_lonlat_model_prediction(**kwargs)
     self.display_predicted_info(predicted_category_probabilities)
 
   def display_predicted_info(self, probabilities):

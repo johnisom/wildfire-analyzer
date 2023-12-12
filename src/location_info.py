@@ -4,6 +4,7 @@ from pathlib import Path
 import sqlite3
 import pandas as pd
 from threading import Lock
+from shapely.geometry import Point
 
 STATE_ALPHA_FIPS_CODES = {
   'AL': '01', 'AK': '02', 'AZ': '04', 'AR': '05', 'CA': '06', 'CO': '08', 'CT': '09', 'DE': '10', 'DC': '11', 'FL': '12', 'GA': '13', 'HI': '15', 'ID': '16',
@@ -61,3 +62,7 @@ def get_state_fips_codes(keys):
     else:
       raise ValueError(f'key must be census region or 2-letter state code, instead got {key!r}')
   return fips_codes
+
+def are_coordinates_inside_usa(lon, lat):
+  counties_geodf = get_counties_geodf()
+  return len(counties_geodf.geometry.loc[counties_geodf.geometry.map(lambda geom: geom.covers(Point(lon, lat)))]) > 0

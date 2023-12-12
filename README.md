@@ -9,7 +9,7 @@ Install miniconda, then run `conda env create --file environment.yml` in this di
 
 ## Running application
 
-Make sure you have 4.5 GB of free memory first.
+Make sure you have 5 GB of free memory first.
 
 `python main.py`
 
