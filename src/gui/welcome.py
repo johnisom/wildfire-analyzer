@@ -18,7 +18,9 @@ class WelcomeFrame(NotebookFrame):
       'To filter the results, you can specify a year range, and also which region of the US to show data for. Additionally, there\'s the option to filter on a per-state basis.'
     plots_text_label = ttk.Label(self, text=plots_text, wraplength=630, justify=LEFT)
     predictions_subtitle = Subtitle(self, text='Predictions')
-    predictions_text = 'Here you\'ll be able to predict the likely cause of a fire by giving the machine learning model some information about the fire: final size, county location, and date of discovery.'
+    predictions_text = 'Here you\'ll be able to predict the likely cause of a fire by giving the machine learning model some information about the fire: final size, county location, and date of discovery.\n' \
+      'The accuracy is 60.93% for the Longitude/Latitude model and 57.64% for the State/County model with 13 labels to choose from.\n' \
+      'That is actually rather good (random chance would be 7.69%).'
     predictions_text_label = ttk.Label(self, text=predictions_text, wraplength=630, justify=LEFT)
     credits_subtitle = Subtitle(self, text='Credits / License')
     credits_text = 'The credits and license pages have more information about the author of the project, the license used, and credits for others where credits are due.'
