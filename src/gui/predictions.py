@@ -65,6 +65,7 @@ class PredictionsFrame(NotebookFrame):
     self.longitude_entry = DefaultEntry(location_input_frame, default_text='-102.674', validate='key', validatecommand=(self.register(PredictionsFrame.check_longitude), '%P'))
     latitude_label = ttk.Label(location_input_frame, text='Latitude: ')
     self.latitude_entry = DefaultEntry(location_input_frame, default_text='42.124', validate='key', validatecommand=(self.register(PredictionsFrame.check_latitude), '%P'))
+    predict_button = ttk.Button(input_frame, text='Predict fire cause', command=self.run_prediction)
 
     # Set items on the grid
     title.grid(row=0, column=0, sticky=(N, E, W))
@@ -86,14 +87,17 @@ class PredictionsFrame(NotebookFrame):
     self.longitude_entry.grid(row=0, column=4, sticky=W)
     latitude_label.grid(row=1, column=3, sticky=E)
     self.latitude_entry.grid(row=1, column=4, sticky=W)
+    predict_button.grid(row=6, column=0, columnspan=4, pady=5, sticky=NSEW)
 
     # Configure the grid
-    self.rowconfigure((0,), weight=1)
-    self.rowconfigure((1,), weight=10)
+    # self.rowconfigure((0,), weight=1)
+    # self.rowconfigure((1,), weight=5)
+    # self.rowconfigure((2,), weight=2)
     self.columnconfigure((0,), weight=1)
     subframe.rowconfigure((0,), weight=1)
     subframe.columnconfigure((0,), weight=1)
-    input_frame.rowconfigure((0, 1, 2, 3), weight=1)
+    input_frame.rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+    input_frame.rowconfigure((6,), weight=2)
     input_frame.columnconfigure((0, 1, 2, 3), weight=1)
     location_input_frame.rowconfigure((0, 1), weight=1)
     location_input_frame.columnconfigure((0, 1, 3, 4), weight=5)
@@ -126,3 +130,20 @@ class PredictionsFrame(NotebookFrame):
     else:
       self.county_entry.configure(state=DISABLED, values=())
       self.county_entry.set('')
+
+  def collect_inputs(self):
+    kwargs = {
+      'discovery_datetime': self.discovery_datetime_entry.get_datetime(),
+      'contained_datetime': self.contained_datetime_entry.get_datetime()
+    }
+    
+    return kwargs
+
+  def validate_inputs(self, kwargs):
+    # TODO
+    msgs = []
+    return msgs
+
+  def run_prediction(self):
+    kwargs = self.collect_inputs()
+    err_msgs = self.validate_inputs(kwargs)

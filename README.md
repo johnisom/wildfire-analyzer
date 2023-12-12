@@ -2,11 +2,12 @@
 
 ## Installation
 
-Install miniconda, then run `conda env create --file environment.yml` in this directory. Then activate the environment with `conda activate wgu-capstone`.
+Install miniconda, then run `conda env create --file environment.yml` in this directory. Then activate the environment with `conda activate wildfire-analyzer`.
 
 ## Running application
 
-`python ./main.py`
+1. Unzip the `joblib-objects.zip` file into the project's top level. `unzip joblib-objects.zip`
+2. `python main.py`
 
 ## About
 

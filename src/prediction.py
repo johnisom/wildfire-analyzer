@@ -1,5 +1,4 @@
 from threading import Lock
-from os import listdir
 from pathlib import Path
 import joblib
 
@@ -8,10 +7,7 @@ FIPS_ENCODER_PATH = Path().parent / 'joblib-objects' / 'fipscode-labelencoder.jo
 LONLAT_MODEL_PATH = Path().parent / 'joblib-objects' / 'firesize-lonlat-discoverycontaineddates-causecode-classifier.joblib'
 
 def joblib_objects_unpacked():
-  try:
-    filenames = listdir(Path().parent / 'joblib-objects')
-  except:
-    return False
+  return FIPS_MODEL_PATH.is_file() and FIPS_ENCODER_PATH.is_file() and LONLAT_MODEL_PATH.is_file()
 
 _fips_encoder = None
 _fips_encoder_mutex = Lock()
