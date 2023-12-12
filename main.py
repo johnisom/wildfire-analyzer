@@ -14,11 +14,11 @@ def location_info_thread_target():
   get_fips_codes_dataframe()
   get_counties_geodf()
   print('...Finished loading location info.')
-# fires_info_thread = Thread(target=fires_info_thread_target)
-# location_info_thread = Thread(target=location_info_thread_target)
+fires_info_thread = Thread(target=fires_info_thread_target)
+location_info_thread = Thread(target=location_info_thread_target)
 
-# fires_info_thread.start()
-# location_info_thread.start()
+fires_info_thread.start()
+location_info_thread.start()
 
 enable_ml = joblib_objects_unpacked()
 if enable_ml:
@@ -29,8 +29,8 @@ if enable_ml:
     get_fips_model()
     get_lonlat_model()
     print('...Finished loading ML models.')
-  # prediction_thread = Thread(target=prediction_thread_target)
-  # prediction_thread.start()
+  prediction_thread = Thread(target=prediction_thread_target)
+  prediction_thread.start()
 
 tk_app = App(enable_predictions=enable_ml)
 tk_app.mainloop()

@@ -1,13 +1,17 @@
-# WGU Capstone Project
+# Wildfire Analyzer
+
 
 ## Installation
+
+Install git, install git lfs, then clone github repo to the computer.
 
 Install miniconda, then run `conda env create --file environment.yml` in this directory. Then activate the environment with `conda activate wildfire-analyzer`.
 
 ## Running application
 
-1. Unzip the `joblib-objects.zip` file into the project's top level. `unzip joblib-objects.zip`
-2. `python main.py`
+Make sure you have 4.5 GB of free memory first.
+
+`python main.py`
 
 ## About
 

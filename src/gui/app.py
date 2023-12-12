@@ -29,12 +29,7 @@ class App(Tk):
       notebook.add(predictions_frame, text=predictions_frame.title)
     else:
       no_ml_message = 'The "joblib-objects" directory was unable to be found, or the files within don\'t match the registered name for the predictive models.\n' \
-        'To remedy this, unzip the "joblib-objects.zip" archive into a new directory called "joblib-objects".\n' \
-        'Ensure the following files are present in the application:\n' \
-        f'- {FIPS_MODEL_PATH}\n' \
-        f'- {FIPS_ENCODER_PATH}\n' \
-        f'- {LONLAT_MODEL_PATH}\n\n' \
-        'The application will continue, but the "Predictions" feature is disabled.'
+        'Make sure to have git-lfs installed and pull the latest version of the repository.'
       self.warn(title='Unable to load ML predictive models!', message=no_ml_message)
     notebook.add(credits_frame, text=credits_frame.title)
     notebook.add(license_frame, text=license_frame.title)
