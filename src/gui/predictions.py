@@ -70,7 +70,7 @@ class PredictionsFrame(NotebookFrame):
     # Set items on the grid
     title.grid(row=0, column=0, sticky=(N, E, W))
     subframe.grid(row=1, column=0, sticky=(N, S, E, W))
-    input_frame.grid(row=0, column=0, sticky=(N, E, W))
+    input_frame.grid(row=0, column=0, sticky=NSEW)
     discovery_datetime_label.grid(row=0, column=0, sticky=E)
     self.discovery_datetime_entry.grid(row=0, column=1, sticky=W)
     contained_datetime_label.grid(row=1, column=0, sticky=E)
@@ -90,9 +90,9 @@ class PredictionsFrame(NotebookFrame):
     predict_button.grid(row=6, column=0, columnspan=4, pady=5, sticky=NSEW)
 
     # Configure the grid
-    # self.rowconfigure((0,), weight=1)
-    # self.rowconfigure((1,), weight=5)
-    # self.rowconfigure((2,), weight=2)
+    self.rowconfigure((0,), weight=1)
+    self.rowconfigure((1,), weight=5)
+    self.rowconfigure((2,), weight=2)
     self.columnconfigure((0,), weight=1)
     subframe.rowconfigure((0,), weight=1)
     subframe.columnconfigure((0,), weight=1)
@@ -121,6 +121,10 @@ class PredictionsFrame(NotebookFrame):
       return tuple(self.state_names_county_names_combined_fips_codes[state_name].keys())
     except: pass
 
+  def get_fips_code(self, state_name='', county_name=''):
+    fips_entry = self.fips_codes_df[(self.fips_codes_df.state_name == state_name) & (self.fips_codes_df.county_name == county_name)].iloc[0]
+    return fips_entry.state_numeric_code + fips_entry.county_numeric_code
+
   def handle_state_selected(self, *_):
     state_name = self.state_var.get()
     county_names = self.county_names(state_name)
@@ -134,9 +138,18 @@ class PredictionsFrame(NotebookFrame):
   def collect_inputs(self):
     kwargs = {
       'discovery_datetime': self.discovery_datetime_entry.get_datetime(),
-      'contained_datetime': self.contained_datetime_entry.get_datetime()
+      'contained_datetime': self.contained_datetime_entry.get_datetime(),
+      'fire_size': 0.0,
     }
-    
+    if self.fire_size_entry.get_value() != '':
+      kwargs['fire_size'] = float(self.fire_size_entry.get_value())
+    if self.longitude_entry.get_value() != '':
+      kwargs['longitude'] = float(self.longitude_entry.get_value())
+    if self.latitude_entry.get_value() != '':
+      kwargs['latitude'] = float(self.latitude_entry.get_value())
+    if self.state_var.get() != '-----' and self.county_var.get() != '':
+      kwargs['combined_fips_code'] = self.get_fips_code(state_name=self.state_var.get(), county_name=self.county_var.get())
+
     return kwargs
 
   def validate_inputs(self, kwargs):
