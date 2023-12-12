@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import showerror
-from .custom_widgets import NotebookFrame, Title, DefaultEntry, DatetimeEntry
+from .custom_widgets import NotebookFrame, Title, Subtitle, DefaultEntry, DatetimeEntry
 from ..location_info import get_fips_codes_dataframe
 import datetime
 
@@ -70,6 +70,34 @@ class PredictionsFrame(NotebookFrame):
     latitude_label = ttk.Label(location_input_frame, text='Latitude: ')
     self.latitude_entry = DefaultEntry(location_input_frame, default_text='42.124', validate='key', validatecommand=(self.register(PredictionsFrame.check_latitude), '%P'))
     predict_button = ttk.Button(input_frame, text='Predict fire cause', command=self.run_prediction)
+    display_frame = ttk.Frame(subframe, padding=5)
+    display_frame_subtitle = Subtitle(display_frame, text='Predicted Category Results')
+    predicted_category_label = ttk.Label(display_frame, text='Top predicted category:')
+    self.predicted_category_var = StringVar()
+    predicted_category = ttk.Label(display_frame, textvariable=self.predicted_category_var, font=('Helvetica', 12))
+    probabilities_frame = ttk.Frame(display_frame)
+    probabilities_label = ttk.Label(probabilities_frame, text='Top 3 predicted categories and relative probabilities:')
+    probability_1_label = ttk.Label(probabilities_frame, text='1. ')
+    self.probability_1_cause_var = StringVar()
+    probability_1_cause = ttk.Label(probabilities_frame, textvariable=self.probability_1_cause_var)
+    probability_1_colon_label = ttk.Label(probabilities_frame, text=':')
+    self.probability_1_percent_var = StringVar()
+    probability_1_percent = ttk.Label(probabilities_frame, textvariable=self.probability_1_percent_var)
+    probability_1_percent_label = ttk.Label(probabilities_frame, text='%')
+    probability_2_label = ttk.Label(probabilities_frame, text='2. ')
+    self.probability_2_cause_var = StringVar()
+    probability_2_cause = ttk.Label(probabilities_frame, textvariable=self.probability_2_cause_var)
+    probability_2_colon_label = ttk.Label(probabilities_frame, text=':')
+    self.probability_2_percent_var = StringVar()
+    probability_2_percent = ttk.Label(probabilities_frame, textvariable=self.probability_2_percent_var)
+    probability_2_percent_label = ttk.Label(probabilities_frame, text='%')
+    probability_3_label = ttk.Label(probabilities_frame, text='3. ')
+    self.probability_3_cause_var = StringVar()
+    probability_3_cause = ttk.Label(probabilities_frame, textvariable=self.probability_3_cause_var)
+    probability_3_colon_label = ttk.Label(probabilities_frame, text=':')
+    self.probability_3_percent_var = StringVar()
+    probability_3_percent = ttk.Label(probabilities_frame, textvariable=self.probability_3_percent_var)
+    probability_3_percent_label = ttk.Label(probabilities_frame, text='%')
 
     # Set items on the grid
     title.grid(row=0, column=0, sticky=(N, E, W))
@@ -92,13 +120,34 @@ class PredictionsFrame(NotebookFrame):
     latitude_label.grid(row=1, column=3, sticky=E)
     self.latitude_entry.grid(row=1, column=4, sticky=W)
     predict_button.grid(row=6, column=0, columnspan=4, pady=5, sticky=NSEW)
+    display_frame.grid(row=1, column=0, sticky=NSEW)
+    display_frame_subtitle.grid(row=0, column=0, columnspan=3, sticky=(N, E, W))
+    predicted_category_label.grid(row=1, column=1, sticky=E)
+    predicted_category.grid(row=2, column=1, sticky=E)
+    probabilities_frame.grid(row=1, column=2, rowspan=4, sticky=(N, S, E))
+    probabilities_label.grid(row=0, column=0, columnspan=5, sticky=(N, E, W))
+    probability_1_label.grid(row=1, column=0, sticky=E)
+    probability_1_cause.grid(row=1, column=1, sticky=E)
+    probability_1_colon_label.grid(row=1, column=2)
+    probability_1_percent.grid(row=1, column=3, sticky=W)
+    probability_1_percent_label.grid(row=1, column=4, sticky=W)
+    probability_2_label.grid(row=2, column=0, sticky=E)
+    probability_2_cause.grid(row=2, column=1, sticky=E)
+    probability_2_colon_label.grid(row=2, column=2)
+    probability_2_percent.grid(row=2, column=3, sticky=W)
+    probability_2_percent_label.grid(row=2, column=4, sticky=W)
+    probability_3_label.grid(row=3, column=0, sticky=E)
+    probability_3_cause.grid(row=3, column=1, sticky=E)
+    probability_3_colon_label.grid(row=3, column=2)
+    probability_3_percent.grid(row=3, column=3, sticky=W)
+    probability_3_percent_label.grid(row=3, column=4, sticky=W)
 
     # Configure the grid
     self.rowconfigure((0,), weight=1)
     self.rowconfigure((1,), weight=5)
-    self.rowconfigure((2,), weight=2)
     self.columnconfigure((0,), weight=1)
-    subframe.rowconfigure((0,), weight=1)
+    subframe.rowconfigure((0,), weight=2)
+    subframe.rowconfigure((1,), weight=1)
     subframe.columnconfigure((0,), weight=1)
     input_frame.rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
     input_frame.rowconfigure((6,), weight=2)
@@ -106,6 +155,13 @@ class PredictionsFrame(NotebookFrame):
     location_input_frame.rowconfigure((0, 1), weight=1)
     location_input_frame.columnconfigure((0, 1, 3, 4), weight=5)
     location_input_frame.columnconfigure((2,), weight=1)
+    display_frame.rowconfigure((0,), weight=2)
+    display_frame.rowconfigure((1, 2, 3, 4), weight=1)
+    display_frame.columnconfigure((0, 1, 2), weight=1)
+    probabilities_frame.rowconfigure((0,), weight=3)
+    probabilities_frame.rowconfigure((1, 2, 3), weight=2)
+    probabilities_frame.columnconfigure((0, 2, 3, 4), weight=1)
+    probabilities_frame.columnconfigure((1), weight=2)
 
   def set_up_state_county_variables(self):
     self.fips_codes_df = get_fips_codes_dataframe()
@@ -185,23 +241,20 @@ class PredictionsFrame(NotebookFrame):
     if len(err_msgs) > 0:
       showerror(parent=self, title='Please fix the following errors', message='\n'.join(err_msgs))
       return
-    predicted_category = ''
-    three_category_probabilities = []
+    predicted_category_probabilities = [('Lightning', 0.76254), ('Arson', 0.13546), ('Miscellaneous', 0.09463)]
     if kwargs.get('combined_fips_code') is not None:
       # TODO
       pass
     else:
       # TODO
       pass
-    self.display_predicted_info(predicted_category, three_category_probabilities)
+    self.display_predicted_info(predicted_category_probabilities)
 
-  def display_predicted_info(self, predicted_category, probabilities):
-    # TODO: create the appropriate widgets in __init__
-    self.predicted_category_var.set(predicted_category)
+  def display_predicted_info(self, probabilities):
+    self.predicted_category_var.set(probabilities[0][0])
     self.probability_1_cause_var.set(probabilities[0][0])
-    self.probability_1_percent_var.set(f'{probabilities[0][1] * 100:.2f}%')
     self.probability_2_cause_var.set(probabilities[1][0])
-    self.probability_2_percent_var.set(f'{probabilities[1][1] * 100:.2f}%')
     self.probability_3_cause_var.set(probabilities[2][0])
-    self.probability_3_percent_var.set(f'{probabilities[2][1] * 100:.2f}%')
-    self.display_frame.grid()
+    self.probability_1_percent_var.set(f'{probabilities[0][1] * 100:.2f}')
+    self.probability_2_percent_var.set(f'{probabilities[1][1] * 100:.2f}')
+    self.probability_3_percent_var.set(f'{probabilities[2][1] * 100:.2f}')
