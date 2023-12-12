@@ -1,10 +1,14 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter.messagebox import showerror
 from .custom_widgets import NotebookFrame, Title, DefaultEntry, DatetimeEntry
 from ..location_info import get_fips_codes_dataframe
+import datetime
 
 class PredictionsFrame(NotebookFrame):
   title = 'Predictions'
+  max_year = 2015
+  min_year = 1992
 
   @staticmethod
   def check_fire_size(newval):
@@ -153,10 +157,51 @@ class PredictionsFrame(NotebookFrame):
     return kwargs
 
   def validate_inputs(self, kwargs):
-    # TODO
     msgs = []
+    # Check datetime validities
+    if type(kwargs['discovery_datetime']) != datetime.datetime:
+      msgs.append('Discovery datetime invalid.')
+    if type(kwargs['contained_datetime']) != datetime.datetime:
+      msgs.append('Contained datetime invalid.')
+    if len(msgs) == 0 and kwargs['contained_datetime'] <= kwargs['discovery_datetime']:
+      msgs.append('Discovery datetime must be earlier than Contained datetime.')
+    # Check firesize is positive
+    if kwargs['fire_size'] <= 0:
+      msgs.append('Fire size must be positive and non-zero.')
+    # Check location
+    if (kwargs.get('longitude') is not None or kwargs.get('latitude') is not None) and kwargs.get('combined_fips_code') is not None:
+      msgs.append('Location must be either by State/County or by Longitude/Latitude, NOT both.')
+    elif kwargs.get('longitude') is None and kwargs.get('latitude') is None and kwargs.get('combined_fips_code') is None:
+      msgs.append('Location must be provided, either by State/County or Longitude/Latitude.')
+    elif kwargs.get('longitude') is not None and kwargs.get('latitude') is None:
+      msgs.append('Latitude must be provided.')
+    elif kwargs.get('longitude') is None and kwargs.get('latitude') is not None:
+      msgs.append('Longitude must be provided.')
     return msgs
 
   def run_prediction(self):
     kwargs = self.collect_inputs()
     err_msgs = self.validate_inputs(kwargs)
+    if len(err_msgs) > 0:
+      showerror(parent=self, title='Please fix the following errors', message='\n'.join(err_msgs))
+      return
+    predicted_category = ''
+    three_category_probabilities = []
+    if kwargs.get('combined_fips_code') is not None:
+      # TODO
+      pass
+    else:
+      # TODO
+      pass
+    self.display_predicted_info(predicted_category, three_category_probabilities)
+
+  def display_predicted_info(self, predicted_category, probabilities):
+    # TODO: create the appropriate widgets in __init__
+    self.predicted_category_var.set(predicted_category)
+    self.probability_1_cause_var.set(probabilities[0][0])
+    self.probability_1_percent_var.set(f'{probabilities[0][1] * 100:.2f}%')
+    self.probability_2_cause_var.set(probabilities[1][0])
+    self.probability_2_percent_var.set(f'{probabilities[1][1] * 100:.2f}%')
+    self.probability_3_cause_var.set(probabilities[2][0])
+    self.probability_3_percent_var.set(f'{probabilities[2][1] * 100:.2f}%')
+    self.display_frame.grid()
