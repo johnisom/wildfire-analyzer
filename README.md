@@ -25,7 +25,7 @@ The application is now installed and ready to use.
 
 ## Running application
 
-Prerequisite: 5 GB of free memory.
+Prerequisite: 3.5 GB of free memory.
 
 In a terminal with miniconda, activate the miniconda environment: `conda activate wildfire-analyzer`.
 Then, navigate to this directory (`cd wildfire-analyzer`).
