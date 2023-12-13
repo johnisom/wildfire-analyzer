@@ -78,7 +78,7 @@ def plot_fipscode_model_confusion_matrix():
   model = get_fips_model()
   fires_df = get_fires_dataframe()
   df = fires_df[['fire_size', 'combined_fips_code', 'discovery_datetime', 'contained_datetime', 'stat_cause_code']].dropna()
-  df.loc[:, ['combined_fips_code']] = encoder.transform(df['combined_fips_code'].astype(int))
+  df.loc[:, ['combined_fips_code']] = encoder.transform(df[['combined_fips_code']])[0].astype(int)
   X = df.drop('stat_cause_code', axis=1)
   y = df['stat_cause_code'] - 1
   fig, ax = plt.subplots(figsize=[10, 10])

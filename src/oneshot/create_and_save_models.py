@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from joblib import dump as joblib_dump
@@ -42,13 +42,13 @@ def create_trained_lonlat_model_and_datasets(fires_df):
 def create_trained_fipscode_model_and_encoder_and_datasets(fires_df):
   """
   Given a dataframe of all data from the fires database, format and split the data for training and train a machine learning model.
-  Returns the model, the combined fips code label encoder, and the split training and testing data.
+  Returns the model, the combined fips code ordinal encoder, and the split training and testing data.
   """
   df = fires_df[['fire_size', 'combined_fips_code', 'discovery_datetime', 'contained_datetime', 'stat_cause_code']]
 
   # Encode data for the model
-  combined_fips_code_le = LabelEncoder()
-  df.loc[:, ['combined_fips_code']] = combined_fips_code_le.fit_transform(df['combined_fips_code'])
+  combined_fips_code_oe = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
+  df.loc[:, ['combined_fips_code']] = combined_fips_code_oe.fit_transform(df[['combined_fips_code']]).astype(int)
   df.loc[:, ['stat_cause_code']] = df['stat_cause_code'] - 1 # change range from 1-13 to 0-12
 
   # Only train with good data
@@ -64,23 +64,33 @@ def create_trained_fipscode_model_and_encoder_and_datasets(fires_df):
   # however, it reduces training data performance.
   clf = RandomForestClassifier(n_estimators=24, max_depth=20, max_samples=0.4, n_jobs=-1)
   clf.fit(X_train, y_train)
-  return clf, combined_fips_code_le, X_train, X_test, y_train, y_test
+  return clf, combined_fips_code_oe, X_train, X_test, y_train, y_test
 
-def train_and_save_fipscode_model_and_encoder(fires_df):
-  clf, combined_fips_code_le, *_ = create_trained_fipscode_model_and_encoder_and_datasets(fires_df)
+def train_and_save_fipscode_model_and_encoder(fires_df=None):
+  if fires_df is None:
+    con = sqlite3.connect(f'file:{DB_PATH}?ro', uri=True)
+    print('Loading all fires from database...')
+    fires_df = pd.read_sql_query('SELECT * FROM fires', con)
+    con.close()
+  clf, combined_fips_code_oe, *_ = create_trained_fipscode_model_and_encoder_and_datasets(fires_df)
   joblib_dump(clf, FIPS_MODEL_PATH, compress=9)
-  joblib_dump(combined_fips_code_le, FIPS_ENCODER_PATH, compress=9)
+  joblib_dump(combined_fips_code_oe, FIPS_ENCODER_PATH, compress=9)
 
-def train_and_save_lonlat_model(fires_df):
+def train_and_save_lonlat_model(fires_df=None):
+  if fires_df is None:
+    con = sqlite3.connect(f'file:{DB_PATH}?ro', uri=True)
+    print('Loading all fires from database...')
+    fires_df = pd.read_sql_query('SELECT * FROM fires', con)
+    con.close()
   clf, *_ = create_trained_lonlat_model_and_datasets(fires_df)
   joblib_dump(clf, LONLAT_MODEL_PATH, compress=9)
 
 def train_and_save_both_models():
   con = sqlite3.connect(f'file:{DB_PATH}?ro', uri=True)
   print('Loading all fires from database...')
-  fires_dataframe = pd.read_sql_query('SELECT * FROM fires', con)
+  fires_df = pd.read_sql_query('SELECT * FROM fires', con)
   con.close()
-  print('Training and saving the FIPS code model and label encoder...')
-  train_and_save_fipscode_model_and_encoder(fires_dataframe)
+  print('Training and saving the FIPS code model and ordinal encoder...')
+  train_and_save_fipscode_model_and_encoder(fires_df)
   print('Training and saving the longitude/latitude model...')
-  train_and_save_lonlat_model(fires_dataframe)
+  train_and_save_lonlat_model(fires_df)

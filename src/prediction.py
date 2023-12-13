@@ -4,7 +4,7 @@ from joblib import load as joblib_load
 import pandas as pd
 
 FIPS_MODEL_PATH = Path().parent / 'joblib-objects' / 'firesize-fipscode-discoverycontaineddates-causecode-classifier.joblib'
-FIPS_ENCODER_PATH = Path().parent / 'joblib-objects' / 'fipscode-labelencoder.joblib'
+FIPS_ENCODER_PATH = Path().parent / 'joblib-objects' / 'fipscode-ordinalencoder.joblib'
 LONLAT_MODEL_PATH = Path().parent / 'joblib-objects' / 'firesize-lonlat-discoverycontaineddates-causecode-classifier.joblib'
 STAT_CAUSE_CODE_TO_DESCR = {
   1: 'Lightning', 2: 'Equipment Use', 3: 'Smoking', 4: 'Campfire', 5: 'Debris Burning',
@@ -46,12 +46,9 @@ def get_lonlat_model():
   return _lonlat_model
 
 def run_fips_model_prediction(fire_size, combined_fips_code, discovery_datetime, contained_datetime):
-  fips_encoder = get_fips_encoder()
+  encoder = get_fips_encoder()
   classifier = get_fips_model()
-  try:
-    encoded_fips_code = fips_encoder.transform([combined_fips_code])[0]
-  except ValueError:
-    encoded_fips_code = -1
+  encoded_fips_code = encoder.transform([[combined_fips_code]])[0].astype(int)[0]
   df = pd.DataFrame(
     data=[[fire_size, encoded_fips_code, discovery_datetime.timestamp(), contained_datetime.timestamp()]],
     columns=['fire_size', 'combined_fips_code', 'discovery_datetime', 'contained_datetime']
