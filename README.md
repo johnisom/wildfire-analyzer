@@ -4,6 +4,24 @@ This is a data analytics and prediction application that uses machine learning. 
 
 ## Installation
 
+### Downloading source code from .zip archive
+
+Install this application:
+- `miniconda`: https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html
+  - If you already have miniconda or anaconda installed (`conda` is a command in your terminal), skip this step.
+
+Download this repository by heading over to the [latest release](https://github.com/johnisom/wildfire-analyzer/releases/tag/v0.1) and downloading the source code. Unzip it.
+
+Then, open your terminal and navigate to the unzipped repository. In a terminal with miniconda active (`conda` is a useable command), install python package dependencies:
+```sh
+conda env create --file environment.yml
+conda activate wildfire-analyzer
+```
+
+The application is now installed and ready to use.
+
+### Downloading source code from github
+
 Install these applications:
 - `git`: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
   - If you already have git installed (`git` is a command in your terminal), skip this step.
@@ -14,9 +32,8 @@ Install these applications:
 
 Next, in a terminal with miniconda active (`conda` is a useable command), clone the repository, pull the git-lfs files, and install python package dependencies:
 ```sh
-git clone https://github.com/johnisom/wgucapstone.git wildfire-analyzer
+git clone https://github.com/johnisom/wildfire-analyzer.git
 cd wildfire-analyzer
-git lfs pull
 conda env create --file environment.yml
 conda activate wildfire-analyzer
 ```
