@@ -26,7 +26,7 @@ Install these applications:
 - `git`: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
   - If you already have git installed (`git` is a command in your terminal), skip this step.
 - `git-lfs`: https://git-lfs.com/
-  - If you already have git-lfs installed (`git lfs` is a command inyour terminal), skip this step.
+  - If you already have git-lfs installed (`git lfs` is a command in your terminal), skip this step.
 - `miniconda`: https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html
   - If you already have miniconda or anaconda installed (`conda` is a command in your terminal), skip this step.
 
