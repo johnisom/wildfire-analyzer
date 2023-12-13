@@ -26,7 +26,6 @@ DB_PATH = Path().parent / 'db' / 'fires.sqlite'
 
 _counties_mutex = Lock()
 _counties_geodf = None
-
 def get_counties_geodf():
   global _counties_geodf
   global _counties_mutex
@@ -38,7 +37,6 @@ def get_counties_geodf():
 
 _fips_codes_mutex = Lock()
 _fips_codes_df = None
-
 def get_fips_codes_dataframe():
   global _fips_codes_df
   global _fips_codes_mutex
@@ -65,4 +63,7 @@ def get_state_fips_codes(keys):
 
 def are_coordinates_inside_usa(lon, lat):
   counties_geodf = get_counties_geodf()
-  return len(counties_geodf.geometry.loc[counties_geodf.geometry.map(lambda geom: geom.covers(Point(lon, lat)))]) > 0
+  possible_matches_indices = counties_geodf.sindex.intersection((lon, lat))
+  possible_matches = counties_geodf.iloc[possible_matches_indices]
+  exact_matches = possible_matches[possible_matches.intersects(Point(lon, lat))]
+  return len(exact_matches) > 0

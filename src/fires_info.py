@@ -7,7 +7,6 @@ DB_PATH = Path().parent / 'db' / 'fires.sqlite'
 
 _fires_mutex = Lock()
 _fires_df = None
-
 def get_fires_dataframe():
   global _fires_df
   global _fires_mutex

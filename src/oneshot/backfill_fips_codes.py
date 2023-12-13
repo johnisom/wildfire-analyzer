@@ -1,6 +1,5 @@
 import sqlite3
-from rtree.index import Index
-from functools import reduce
+from shapely.geometry import Point
 from ..location_info import get_counties_geodf
 
 DB_FILENAME = 'db/fires.sqlite'
@@ -8,6 +7,7 @@ DB_FILENAME = 'db/fires.sqlite'
 def backfill_location_information(dryrun=False):
   print('loading counties')
   counties = get_counties_geodf()
+  geoidx = counties.sindex
   print('connecting to db')
   con = sqlite3.connect(DB_FILENAME)
   cur = con.cursor()
@@ -29,18 +29,14 @@ def backfill_location_information(dryrun=False):
   for state_numeric_code, county_numeric_code, state_name, county_name in cur.execute('SELECT state_numeric_code, county_numeric_code, state_name, county_name FROM fips_codes'):
     fips_codes_to_state_county_name[state_numeric_code + county_numeric_code] = (state_name, county_name)
 
-  # build index to do querying
-  print('building county shape index')
-  geoidx = Index()
-  for pid, poly in enumerate(counties['geometry'].values):
-    geoidx.insert(pid, poly.bounds)
-
   # map the coordinates to the respective counties index
   print('mapping longitude and latitude to county')
   for elem in fires_coordinate_county_indices:
     lon, lat = elem[1]
-    bounds = (lon, lat, lon, lat)
-    county_idx = next(geoidx.nearest(bounds)) # alt: list(geoindex.nearest(bounds))[0]
+    possible_matches_indices = geoidx.intersection((lon, lat))
+    possible_matches = counties.iloc[possible_matches_indices]
+    precise_matches = possible_matches[possible_matches.intersects(Point(lon, lat))]
+    county_idx = precise_matches.iloc[0].name
     elem[2] = county_idx
 
   # now we can update the county fips codes to the database
