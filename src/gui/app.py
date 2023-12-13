@@ -4,7 +4,7 @@ from tkinter import ttk
 from .welcome import WelcomeFrame
 from .plots import PlotsFrame
 from .predictions import PredictionsFrame
-from .credits import CreditsFrame, LicenseFrame
+from .license import LicenseFrame
 from ..prediction import FIPS_ENCODER_PATH, FIPS_MODEL_PATH, LONLAT_MODEL_PATH
 from .custom_widgets import Title
 
@@ -20,7 +20,6 @@ class App(Tk):
     notebook = ttk.Notebook(self, padding=2)
     welcome_frame = WelcomeFrame(notebook)
     plots_frame = PlotsFrame(notebook)
-    credits_frame = CreditsFrame(notebook)
     license_frame = LicenseFrame(notebook)
     notebook.add(welcome_frame, text=welcome_frame.title)
     notebook.add(plots_frame, text=plots_frame.title)
@@ -31,7 +30,6 @@ class App(Tk):
       no_ml_message = 'The "joblib-objects" directory was unable to be found, or the files within don\'t match the registered name for the predictive models.\n' \
         'Make sure to have git-lfs installed and pull the latest version of the repository.'
       self.warn(title='Unable to load ML predictive models!', message=no_ml_message)
-    notebook.add(credits_frame, text=credits_frame.title)
     notebook.add(license_frame, text=license_frame.title)
 
     # Set up the grid

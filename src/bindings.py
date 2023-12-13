@@ -1,6 +1,6 @@
 from math import inf
 import matplotlib.pyplot as plt
-from .plotting import plot_causes_of_fires_by_number_of_fires, plot_causes_of_fires_by_total_area_burned, plot_counties_by_number_of_fires, plot_counties_by_total_area_burned
+from .plotting import plot_causes_of_fires_by_number_of_fires, plot_causes_of_fires_by_total_area_burned, plot_counties_by_number_of_fires, plot_counties_by_total_area_burned, plot_fipscode_model_confusion_matrix, plot_lonlat_model_confusion_matrix
 from .myutils import add_fire_count_to_counties, add_acres_burned_to_counties
 from .location_info import get_counties_geodf
 from .fires_info import get_fires_dataframe
@@ -73,4 +73,12 @@ def plot_everything(keys=('lower48',), year_start=None, year_end=None):
   plot_counties_by_total_area_burned(counties_geo_df, keys, fire_area_burned_title)
   plot_causes_of_fires_by_number_of_fires(fires_df, keys, fire_cause_counts_title)
   plot_counties_by_number_of_fires(counties_geo_df, keys, fire_counts_title)
+  plt.show()
+
+def plot_lonlat_confusion_matrix():
+  plot_lonlat_model_confusion_matrix()
+  plt.show()
+
+def plot_fipscode_confusion_matrix():
+  plot_fipscode_model_confusion_matrix()
   plt.show()

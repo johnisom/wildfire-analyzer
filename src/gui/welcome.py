@@ -10,7 +10,7 @@ class WelcomeFrame(NotebookFrame):
 
     title = Title(self, text='Welcome')
     intro_text = 'Welcome to Wildfire Analyzer! This application is a data analytics application for wildfires in the US.\n' \
-      'Other than this welcome page, there are 3 pages: Plots, Predictions, and Credits.'
+      'Other than this welcome page, there are 4 pages: Plots, Predictions, Credits, and License.'
     intro_text_label = ttk.Label(self, text=intro_text, wraplength=630, justify=LEFT)
     plots_subtitle = Subtitle(self, text='Plots')
     plots_text = 'In the plots page you can plot pie charts of the causes of wildfires (such as lightning or arson) by number of fires started or by number of acres burned.\n' \
@@ -19,8 +19,7 @@ class WelcomeFrame(NotebookFrame):
     plots_text_label = ttk.Label(self, text=plots_text, wraplength=630, justify=LEFT)
     predictions_subtitle = Subtitle(self, text='Predictions')
     predictions_text = 'Here you\'ll be able to predict the likely cause of a fire by giving the machine learning model some information about the fire: final size, county location, and date of discovery.\n' \
-      'The accuracy is 60.93% for the Longitude/Latitude model and 57.64% for the State/County model with 13 labels to choose from.\n' \
-      'That is actually rather good (random chance would be 7.69%).'
+      'The performance is 60.93% accuracy for the Longitude/Latitude model and 57.64% for the State/County model with 13 labels to choose from. That is actually rather good (random chance would be 7.69%).'
     predictions_text_label = ttk.Label(self, text=predictions_text, wraplength=630, justify=LEFT)
     credits_subtitle = Subtitle(self, text='Credits / License')
     credits_text = 'The credits and license pages have more information about the author of the project, the license used, and credits for others where credits are due.'

@@ -47,7 +47,7 @@ class PredictionsFrame(NotebookFrame):
     self.set_up_state_county_variables()
 
     title = Title(self, text='Predictions')
-    subframe = ttk.LabelFrame(self, text='Predict cause of fire in giving some parameters')
+    subframe = ttk.LabelFrame(self, text='Predict cause of fire by giving some parameters')
 
     input_frame = ttk.Frame(subframe, padding=5)
     discovery_datetime_label = ttk.Label(input_frame, text='Discovery datetime: ')
