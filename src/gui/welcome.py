@@ -21,8 +21,8 @@ class WelcomeFrame(NotebookFrame):
     predictions_text = 'Here you\'ll be able to predict the likely cause of a fire by giving the machine learning model some information about the fire: final size, county location, and date of discovery.\n' \
       'The performance is 60.93% accuracy for the Longitude/Latitude model and 57.64% for the State/County model with 13 labels to choose from. That is actually rather good (random chance would be 7.69%).'
     predictions_text_label = ttk.Label(self, text=predictions_text, wraplength=630, justify=LEFT)
-    credits_subtitle = Subtitle(self, text='Credits / License')
-    credits_text = 'The credits and license pages have more information about the author of the project, the license used, and credits for others where credits are due.'
+    credits_subtitle = Subtitle(self, text='License')
+    credits_text = 'The license pages has information about the software license used.'
     credits_text_label = ttk.Label(self, text=credits_text, wraplength=630, justify=LEFT)
 
     # Set items on the grid

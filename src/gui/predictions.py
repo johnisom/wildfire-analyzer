@@ -272,7 +272,7 @@ class PredictionsFrame(NotebookFrame):
     self.probability_3_percent_var.set(f'{probabilities[2][1] * 100:.2f}')
 
   def show_fips_confusion_matrix(self):
-    plot_lonlat_confusion_matrix()
+    plot_fipscode_confusion_matrix()
 
   def show_lonlat_confusion_matrix(self):
-    plot_fipscode_confusion_matrix()
+    plot_lonlat_confusion_matrix()
