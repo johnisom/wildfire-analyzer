@@ -11,8 +11,10 @@ def plot_counties_by_number_of_fires(counties_geo_df, keys, plot_title):
   zero_fire_counts = counties_geo_df[counties_geo_df.fire_count == 0]
   more_than_zero_fire_counts = counties_geo_df[counties_geo_df.fire_count > 0]
   fig, ax = plt.subplots(figsize=[12, 8])
-  zero_fire_counts.plot(ax=ax, color='grey', legend=True, aspect=1)
-  more_than_zero_fire_counts.plot(ax=ax, column='fire_count', legend=True, norm=LogNorm(vmin=more_than_zero_fire_counts.fire_count.min(), vmax=more_than_zero_fire_counts.fire_count.max()))
+  if len(zero_fire_counts) > 0:
+    zero_fire_counts.plot(ax=ax, color='grey', legend=True)
+  if len(more_than_zero_fire_counts) > 0:
+    more_than_zero_fire_counts.plot(ax=ax, column='fire_count', legend=True, norm=LogNorm(vmin=more_than_zero_fire_counts.fire_count.min(), vmax=more_than_zero_fire_counts.fire_count.max()))
   ax.tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
   ax.set_title(plot_title)
   fig.supxlabel('(Gray: data not available)')
@@ -25,8 +27,10 @@ def plot_counties_by_total_area_burned(counties_geo_df, keys, plot_title):
   zero_acres_burned = counties_geo_df[counties_geo_df.acres_burned == 0]
   more_than_zero_acres_burned = counties_geo_df[counties_geo_df.acres_burned > 0]
   fig, ax = plt.subplots(figsize=[12, 8])
-  zero_acres_burned.plot(ax=ax, color='grey', legend=True, aspect=1)
-  more_than_zero_acres_burned.plot(ax=ax, column='acres_burned', legend=True, norm=LogNorm(vmin=more_than_zero_acres_burned.acres_burned.min(), vmax=more_than_zero_acres_burned.acres_burned.max()))
+  if len(zero_acres_burned) > 0:
+    zero_acres_burned.plot(ax=ax, color='grey', legend=True)
+  if len(more_than_zero_acres_burned) > 0:
+    more_than_zero_acres_burned.plot(ax=ax, column='acres_burned', legend=True, norm=LogNorm(vmin=more_than_zero_acres_burned.acres_burned.min(), vmax=more_than_zero_acres_burned.acres_burned.max()))
   ax.tick_params(axis='both', which='both', bottom=False, left=False, labelbottom=False, labelleft=False)
   ax.set_title(plot_title)
   fig.supxlabel('(Gray: data not available)')
