@@ -10,7 +10,7 @@ Install this application:
 - `miniconda`: https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html
   - If you already have miniconda or anaconda installed (`conda` is a command in your terminal), skip this step.
 
-Download this repository by heading over to the [latest release](https://github.com/johnisom/wildfire-analyzer/releases/tag/v0.2) and downloading the source code. Unzip it.
+Download this repository by heading over to the [latest release](https://github.com/johnisom/wildfire-analyzer/releases/tag/v0.3) and downloading the source code. Unzip it.
 
 Then, open your terminal and navigate to the unzipped repository. In a terminal with miniconda active (`conda` is a useable command), install python package dependencies:
 ```sh
