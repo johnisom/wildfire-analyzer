@@ -12,7 +12,7 @@ STAT_CAUSE_CODE_TO_DESCR = {
   11: 'Powerline', 12: 'Structure', 13: 'Missing/Undefined'
 }
 
-def joblib_objects_unpacked():
+def joblib_objects_present():
   return FIPS_MODEL_PATH.is_file() and FIPS_ENCODER_PATH.is_file() and LONLAT_MODEL_PATH.is_file()
 
 _fips_encoder = None
@@ -48,7 +48,7 @@ def get_lonlat_model():
 def run_fips_model_prediction(fire_size, combined_fips_code, discovery_datetime, contained_datetime):
   encoder = get_fips_encoder()
   classifier = get_fips_model()
-  encoded_fips_code = encoder.transform([[combined_fips_code]])[0].astype(int)[0]
+  encoded_fips_code = encoder.transform(pd.DataFrame(data=[[combined_fips_code]], columns=['combined_fips_code']))[0].astype(int)[0]
   df = pd.DataFrame(
     data=[[fire_size, encoded_fips_code, discovery_datetime.timestamp(), contained_datetime.timestamp()]],
     columns=['fire_size', 'combined_fips_code', 'discovery_datetime', 'contained_datetime']

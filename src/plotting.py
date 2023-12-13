@@ -67,7 +67,7 @@ def plot_lonlat_model_confusion_matrix():
   df = fires_df[['fire_size', 'longitude', 'latitude', 'discovery_datetime', 'contained_datetime', 'stat_cause_code']].dropna()
   X = df.drop('stat_cause_code', axis=1)
   y = df['stat_cause_code'] - 1
-  fig, ax = plt.subplots(figsize=[12, 8])
+  fig, ax = plt.subplots(figsize=[10, 9])
   ConfusionMatrixDisplay.from_predictions(y_true=y, y_pred=model.predict(X), normalize='true', xticks_rotation='vertical', display_labels=STAT_CAUSE_CODE_TO_DESCR.values(), values_format='.2f', ax=ax)
   ax.set_title('Confusion Matrix for the Longitude/Latitude prediction model.')
   fig.tight_layout()
@@ -81,7 +81,7 @@ def plot_fipscode_model_confusion_matrix():
   df.loc[:, ['combined_fips_code']] = encoder.transform(df[['combined_fips_code']])[0].astype(int)
   X = df.drop('stat_cause_code', axis=1)
   y = df['stat_cause_code'] - 1
-  fig, ax = plt.subplots(figsize=[10, 10])
+  fig, ax = plt.subplots(figsize=[10, 9])
   ConfusionMatrixDisplay.from_predictions(y_true=y, y_pred=model.predict(X), normalize='true', xticks_rotation='vertical', display_labels=STAT_CAUSE_CODE_TO_DESCR.values(), values_format='.2f', ax=ax)
   ax.set_title('Confusion Matrix for the State/County prediction model.')
   fig.tight_layout()

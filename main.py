@@ -2,7 +2,7 @@ from src.gui.app import App
 from threading import Thread
 from src.fires_info import get_fires_dataframe
 from src.location_info import get_counties_geodf,get_fips_codes_dataframe
-from src.prediction import get_fips_encoder, get_fips_model, get_lonlat_model, joblib_objects_unpacked
+from src.prediction import get_fips_encoder, get_fips_model, get_lonlat_model, joblib_objects_present
 
 # Load the database data and pygris geographical data in the background
 def fires_info_thread_target():
@@ -20,7 +20,7 @@ location_info_thread = Thread(target=location_info_thread_target)
 fires_info_thread.start()
 location_info_thread.start()
 
-enable_ml = joblib_objects_unpacked()
+enable_ml = joblib_objects_present()
 if enable_ml:
   # Load the ML prediction models in the background
   def prediction_thread_target():
